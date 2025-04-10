@@ -14,8 +14,62 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader'
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 import * as R from 'myLib'
+import {animArray}  from './array.js'
 
 
+function getByItemName(animArray, name) {
+  let ret = null;
+  let len = animArray.length;
+  for(let i=0; i<len; i++) {
+      let item = animArray[i];
+      if(item.name == name) {
+        return item;
+      }
+  }
+  return ret;
+}
+
+const one = new THREE.Vector3(1, 1, 1);
+const zero = new THREE.Vector3(0, 0, 0);
+function getByItemNameVectory(animArray, name, frameIdx, defaultValue) {
+  let ret = getByItemName(animArray, name);
+  if(ret== null) {
+    return defaultValue;
+  }
+  let values = ret.values;
+  let eleLen = values/3;
+  let i = frameIdx;
+  let item =  values[i*3+0];
+  let item1 = values[i*3+1];
+  let item2 = values[i*3+2];     
+  return new THREE.Vector3(item, item1, item2);
+}
+
+function getByItemNameQuaternion(animArray, name, frameIdx) {
+  let ret = getByItemName(animArray, name);
+  if(ret== null) {
+    return new THREE.Quaternion(1, 0, 0, 0);
+  }
+  let values = ret.values;
+  let eleLen = values/3;
+  let i = frameIdx;
+  let item =  values[i*3+0];
+  let item1 = values[i*3+1];
+  let item2 = values[i*3+2];     
+  let item3 = values[i*3+3];     
+  return new THREE.Quaternion(item, item1, item2, item3);
+}
+
+function getMatrixByBoneName(animArray, name, frameIdx) {
+  let ret0 = getByItemNameVectory(animArray, name+".position", frameIdx, zero);
+  let ret1 = getByItemNameVectory(animArray, name+".scale", frameIdx, one);
+  let ret2 = getByItemNameQuaternion(animArray, name+".quaternion", frameIdx, zero);
+  let mat = new THREE.Matrix4();
+  return mat.compose(ret0, ret2, ret1);
+}
+
+let ret = getMatrixByBoneName(animArray, "R_Forearm", 0);
+console.log(ret)
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -194,7 +248,7 @@ function drawSkeleton(bone) {
     let childBone = getMatrix(entry);
     let childPoint = new THREE.Vector3();   
     childPoint.setFromMatrixPosition(childBone);
-    console.log(bone.name, bonePoint.x, bonePoint.y, bonePoint.z);
+    //console.log(bone.name, bonePoint.x, bonePoint.y, bonePoint.z);
     drawLne(bone.name, childBone.name, bonePoint, childPoint);
     drawSkeleton(entry);
   }
@@ -270,8 +324,9 @@ let  skeletonHelper = null;
     const frameT = 0;//clock.getDelta();
     if(skeletonHelper != null) {
       let bones = skeletonHelper.bones;
-      let bone = bones[0];
-      console.log("loop", bone.name, bone.matrixWorld.elements[0]);
+      let bone = bones[5];
+
+      //console.log("loop", bone.name, bone.matrixWorld.elements[0]);
     }
     
 
@@ -360,17 +415,17 @@ let  skeletonHelper = null;
           }
         }
       });      
-      console.log('morph-------->', morphTargets);
+      //console.log('morph-------->', morphTargets);
       morphFun(gui, morphTargets)
       gltf.scene.traverse(function(obj) {
         if (obj.isBone) {
-          console.log('bone：', obj.name);
+          //console.log('bone：', obj.name);
         }else {
-          console.log('obj', obj.name);
+          //console.log('obj', obj.name);
         }
         
         if (obj.isMesh) {
-            console.log('gltf默认材质',obj.material);
+            //console.log('gltf默认材质',obj.material);
             obj.material.map = diffuseTexture;
             obj.material.alphaMap = diffuseTexture;
             obj.material.needsUpdate = true;
@@ -379,12 +434,12 @@ let  skeletonHelper = null;
             obj.material.aoMap = aoTexture;
             obj.material.needsUpdate = true;
             let geometry = obj.geometry;
-            console.log(geometry.attributes.position);
+            //console.log(geometry.attributes.position);
         }
     });
 
     scene.add( gltf.scene )
-    console.log(gltf.scene);
+    //console.log(gltf.scene);
      skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
     scene.add(skeletonHelper); 
  
@@ -431,7 +486,7 @@ let  skeletonHelper = null;
       let tracks = animation.tracks
 
       console.log("animName:", animName, duration)
-      console.log("animName:", tracks[0])
+      console.log("tracks:", tracks)
       igltfexporter.parse(
           gltf.animations[0],
           function (result) { 
