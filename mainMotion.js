@@ -16,6 +16,27 @@ import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 import * as R from 'myLib'
 import {animArray}  from './array.js'
 
+let frameIDX = 35;
+let boneMap = {}
+
+function getScaleFromMatrix(mat) {
+  let ret = new THREE.Vector3();
+  ret.setFromMatrixScale(mat);
+  return ret;
+ }
+
+function getPosFromMatrix(mat) {
+  let ret = new THREE.Vector3();
+  ret.setFromMatrixPosition(mat);
+  return ret;
+ }
+ 
+ function getQuatFromMatrix(mat) {
+   let ret = new THREE.Quaternion();
+   ret.setFromRotationMatrix(mat);
+   return ret;
+  }
+
 
 function getByItemName(animArray, name) {
   let ret = null;
@@ -34,7 +55,7 @@ const zero = new THREE.Vector3(0, 0, 0);
 function getByItemNameVectory(animArray, name, frameIdx, defaultValue) {
   let ret = getByItemName(animArray, name);
   if(ret== null) {
-    return defaultValue;
+    return null;
   }
   let values = ret.values;
   let eleLen = values/3;
@@ -48,7 +69,7 @@ function getByItemNameVectory(animArray, name, frameIdx, defaultValue) {
 function getByItemNameQuaternion(animArray, name, frameIdx) {
   let ret = getByItemName(animArray, name);
   if(ret== null) {
-    return new THREE.Quaternion(1, 0, 0, 0);
+    return null;
   }
   let values = ret.values;
   let eleLen = values/3;
@@ -60,16 +81,25 @@ function getByItemNameQuaternion(animArray, name, frameIdx) {
   return new THREE.Quaternion(item, item1, item2, item3);
 }
 
-function getMatrixByBoneName(animArray, name, frameIdx) {
+function getMatrixByBoneName(animArray, name, frameIdx, matOri) {
   let ret0 = getByItemNameVectory(animArray, name+".position", frameIdx, zero);
+  if(ret0 == null) {
+    ret0 = getPosFromMatrix(matOri);
+  }
   let ret1 = getByItemNameVectory(animArray, name+".scale", frameIdx, one);
+  if(ret1 == null) {
+    ret1 = getScaleFromMatrix(matOri);
+  }
   let ret2 = getByItemNameQuaternion(animArray, name+".quaternion", frameIdx, zero);
+  if(ret2 == null) {
+    ret2 = getQuatFromMatrix(matOri);
+  }
   let mat = new THREE.Matrix4();
   return mat.compose(ret0, ret2, ret1);
 }
 
-let ret = getMatrixByBoneName(animArray, "R_Forearm", 0);
-console.log(ret)
+// let ret = getMatrixByBoneName(animArray, "R_Forearm", 0);
+// console.log(ret)
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -191,11 +221,11 @@ animate();
 
 function drawLne(name, childName, point1, point2) {
   const materialLine = new THREE.LineBasicMaterial({
-    color: 0x0000ff
+    color: 0xFF0000
   });
 
   if(name == "RootNode") {
-    let SCALE = 0.02;
+    let SCALE = 0.09;
     const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe:true });
     const geometry = new THREE.BoxGeometry(SCALE, SCALE, SCALE);
     const cube = new THREE.Mesh(geometry, material);
@@ -205,7 +235,7 @@ function drawLne(name, childName, point1, point2) {
     scene.add( cube );
   }else {
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe:true });
-      let SCALE = 0.01;
+      let SCALE = 0.02;
       const geometry = new THREE.BoxGeometry(SCALE, SCALE, SCALE);
       const cube = new THREE.Mesh(geometry, material);
       cube.position.x = point1.x;
@@ -223,12 +253,28 @@ function drawLne(name, childName, point1, point2) {
 }
 
 
-function getMatrix(bone) {
+function getLocalMatrix(bone) {
   let mat = new THREE.Matrix4();
   mat = mat.premultiply(bone.matrix);
+  return mat;
+}
+
+function getLocalMatrixTmp(bone) {
+  console.log("=>", bone.name);
+  if(bone.name == "") {
+    return bone.matrix;
+  }
+  let matOri = boneMap[bone.name];
+  let mat = getMatrixByBoneName(animArray, bone.name, 0, matOri);
+  return mat;
+}
+
+function getMatrix(bone) {
+  let mat = new THREE.Matrix4();
+  mat = mat.premultiply(getLocalMatrixTmp(bone));
   let parent = bone.parent;
   while(parent!= null) {
-    let matParent = parent.matrix;
+    let matParent = getLocalMatrixTmp(parent);
     mat = mat.premultiply(matParent);
     parent = parent.parent; 
   }
@@ -239,9 +285,8 @@ function drawSkeleton(bone) {
   let bonePoint = new THREE.Vector3();
   bonePoint.setFromMatrixPosition(mat);
   
-//   console.log(bone.name);
-//   printMat(mat.elements);
-//   console.log("");
+  // let aLocal = getLocalMatrix(bone);
+  // console.log("=>", bone.name, getPosFromMatrix(aLocal), getQuatFromMatrix(aLocal));
   
   let children = bone.children;
   for(let entry of children) {
@@ -308,7 +353,8 @@ async function loadWebAssembly(fileName) {
    });
  };
 
- let igltfexporter = new GLTFExporter();
+let boneRoot = null;
+let igltfexporter = new GLTFExporter();
 let thisBones = [];
 let  skeletonHelper = null;
  loadWebAssembly('a.wasm')
@@ -414,6 +460,10 @@ let  skeletonHelper = null;
             }
           }
         }
+        if (child.name == "RootNode") {
+          boneRoot = child;
+        }
+        boneMap[child.name] = child.matrix;
       });      
       //console.log('morph-------->', morphTargets);
       morphFun(gui, morphTargets)
@@ -438,12 +488,11 @@ let  skeletonHelper = null;
         }
     });
 
-    scene.add( gltf.scene )
+    //scene.add( gltf.scene )
     //console.log(gltf.scene);
      skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
-    scene.add(skeletonHelper); 
- 
-    
+    //scene.add(skeletonHelper); 
+    drawSkeleton(gltf.scene.getObjectByName("RootNode"));
     
     var grid = new THREE.GridHelper(24, 24, 0xFF0000, 0x444444);            
     grid.material.opacity = 0.4;
