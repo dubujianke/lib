@@ -1,0 +1,763 @@
+{
+  "objects": [
+    {
+      "name": "body",
+      "type": "box",
+      "position": [0, 2.0, 0],
+      "size": [2.55, 3.2, 12.0],
+      "color": [0.95, 0.95, 0.95]
+    },
+    {
+      "name": "roof_ac_unit",
+      "type": "box",
+      "position": [0, 3.75, -2.5],
+      "size": [2.2, 0.3, 2.0],
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "windshield",
+      "type": "box",
+      "position": [0, 2.2, 5.95],
+      "size": [2.3, 1.5, 0.05],
+      "rotation": [25, 0, 0],
+      "color": [0.6, 0.8, 0.9],
+      "opacity": 0.6
+    },
+    {
+      "name": "rear_windshield",
+      "type": "box",
+      "position": [0, 2.2, -5.95],
+      "size": [2.2, 1.2, 0.05],
+      "rotation": [-20, 0, 0],
+      "color": [0.6, 0.8, 0.9],
+      "opacity": 0.5
+    },
+    {
+      "name": "headlight_left",
+      "type": "box",
+      "position": [-0.85, 0.7, 6.05],
+      "size": [0.25, 0.18, 0.1],
+      "color": [1.0, 1.0, 0.8]
+    },
+    {
+      "name": "headlight_right",
+      "type": "box",
+      "position": [0.85, 0.7, 6.05],
+      "size": [0.25, 0.18, 0.1],
+      "color": [1.0, 1.0, 0.8]
+    },
+    {
+      "name": "turn_signal_left",
+      "type": "box",
+      "position": [-1.1, 0.7, 6.05],
+      "size": [0.1, 0.12, 0.1],
+      "color": [1.0, 0.6, 0.0]
+    },
+    {
+      "name": "turn_signal_right",
+      "type": "box",
+      "position": [1.1, 0.7, 6.05],
+      "size": [0.1, 0.12, 0.1],
+      "color": [1.0, 0.6, 0.0]
+    },
+    {
+      "name": "taillight_left",
+      "type": "box",
+      "position": [-0.85, 1.2, -6.05],
+      "size": [0.25, 0.18, 0.1],
+      "color": [0.9, 0.1, 0.1]
+    },
+    {
+      "name": "taillight_right",
+      "type": "box",
+      "position": [0.85, 1.2, -6.05],
+      "size": [0.25, 0.18, 0.1],
+      "color": [0.9, 0.1, 0.1]
+    },
+    {
+      "name": "side_mirror_left_arm",
+      "type": "cylinder",
+      "position": [-1.28, 2.0, 5.5],
+      "radius": 0.03,
+      "height": 0.4,
+      "color": [0.2, 0.2, 0.2]
+    },
+    {
+      "name": "side_mirror_left_head",
+      "type": "box",
+      "position": [-1.38, 2.2, 5.5],
+      "size": [0.15, 0.2, 0.05],
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "side_mirror_right_arm",
+      "type": "cylinder",
+      "position": [1.28, 2.0, 5.5],
+      "radius": 0.03,
+      "height": 0.4,
+      "color": [0.2, 0.2, 0.2]
+    },
+    {
+      "name": "side_mirror_right_head",
+      "type": "box",
+      "position": [1.38, 2.2, 5.5],
+      "size": [0.15, 0.2, 0.05],
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "windshield_wiper_left",
+      "type": "box",
+      "position": [-0.5, 2.0, 5.92],
+      "size": [0.04, 0.7, 0.02],
+      "rotation": [25, 0, 0],
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "windshield_wiper_right",
+      "type": "box",
+      "position": [0.5, 2.0, 5.92],
+      "size": [0.04, 0.7, 0.02],
+      "rotation": [25, 0, 0],
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_front_left_tire",
+      "type": "cylinder",
+      "position": [-1.0, 0.5, 4.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.5,
+      "height": 0.3,
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_front_left_rim",
+      "type": "cylinder",
+      "position": [-1.0, 0.5, 4.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.35,
+      "height": 0.31,
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "wheel_front_right_tire",
+      "type": "cylinder",
+      "position": [1.0, 0.5, 4.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.5,
+      "height": 0.3,
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_front_right_rim",
+      "type": "cylinder",
+      "position": [1.0, 0.5, 4.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.35,
+      "height": 0.31,
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "wheel_rear1_left_tire",
+      "type": "cylinder",
+      "position": [-1.0, 0.5, -2.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.5,
+      "height": 0.3,
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_rear1_left_rim",
+      "type": "cylinder",
+      "position": [-1.0, 0.5, -2.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.35,
+      "height": 0.31,
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "wheel_rear1_right_tire",
+      "type": "cylinder",
+      "position": [1.0, 0.5, -2.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.5,
+      "height": 0.3,
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_rear1_right_rim",
+      "type": "cylinder",
+      "position": [1.0, 0.5, -2.0],
+      "rotation": [0, 0, 90],
+      "radius": 0.35,
+      "height": 0.31,
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "wheel_rear2_left_tire",
+      "type": "cylinder",
+      "position": [-1.0, 0.5, -4.5],
+      "rotation": [0, 0, 90],
+      "radius": 0.5,
+      "height": 0.3,
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_rear2_left_rim",
+      "type": "cylinder",
+      "position": [-1.0, 0.5, -4.5],
+      "rotation": [0, 0, 90],
+      "radius": 0.35,
+      "height": 0.31,
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "wheel_rear2_right_tire",
+      "type": "cylinder",
+      "position": [1.0, 0.5, -4.5],
+      "rotation": [0, 0, 90],
+      "radius": 0.5,
+      "height": 0.3,
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "wheel_rear2_right_rim",
+      "type": "cylinder",
+      "position": [1.0, 0.5, -4.5],
+      "rotation": [0, 0, 90],
+      "radius": 0.35,
+      "height": 0.31,
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "door_passenger",
+      "type": "box",
+      "position": [1.28, 1.5, 2.0],
+      "size": [0.05, 2.0, 1.0],
+      "color": [0.85, 0.85, 0.85]
+    },
+    {
+      "name": "door_driver",
+      "type": "box",
+      "position": [-1.28, 1.5, 4.5],
+      "size": [0.05, 1.8, 0.8],
+      "color": [0.85, 0.85, 0.85]
+    },
+    {
+      "name": "luggage_compartment_door",
+      "type": "box",
+      "position": [1.28, 0.9, -3.5],
+      "size": [0.05, 0.8, 1.5],
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "license_plate_front",
+      "type": "box",
+      "position": [0, 0.5, 6.06],
+      "size": [0.5, 0.15, 0.02],
+      "color": [0.1, 0.2, 0.8]
+    },
+    {
+      "name": "license_plate_rear",
+      "type": "box",
+      "position": [0, 0.5, -6.06],
+      "size": [0.5, 0.15, 0.02],
+      "color": [0.1, 0.2, 0.8]
+    },
+    {
+      "name": "exhaust_pipe",
+      "type": "cylinder",
+      "position": [0, 0.5, -6.1],
+      "rotation": [-90, 0, 0],
+      "radius": 0.06,
+      "height": 0.15,
+      "color": [0.2, 0.2, 0.2]
+    },
+    {
+      "name": "sunroof_front",
+      "type": "box",
+      "position": [0, 3.22, 1.0],
+      "size": [0.7, 0.05, 0.9],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.5
+    },
+    {
+      "name": "sunroof_rear",
+      "type": "box",
+      "position": [0, 3.22, -1.0],
+      "size": [0.7, 0.05, 0.9],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.5
+    },
+    {
+      "name": "side_window_left_1",
+      "type": "box",
+      "position": [-1.28, 1.8, 2.5],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_left_2",
+      "type": "box",
+      "position": [-1.28, 1.8, 1.0],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_left_3",
+      "type": "box",
+      "position": [-1.28, 1.8, -0.5],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_left_4",
+      "type": "box",
+      "position": [-1.28, 1.8, -2.0],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_left_5",
+      "type": "box",
+      "position": [-1.28, 1.8, -3.5],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_right_1",
+      "type": "box",
+      "position": [1.28, 1.8, 2.5],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_right_2",
+      "type": "box",
+      "position": [1.28, 1.8, 1.0],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_right_3",
+      "type": "box",
+      "position": [1.28, 1.8, -0.5],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_right_4",
+      "type": "box",
+      "position": [1.28, 1.8, -2.0],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "side_window_right_5",
+      "type": "box",
+      "position": [1.28, 1.8, -3.5],
+      "size": [0.02, 0.9, 1.6],
+      "color": [0.5, 0.7, 0.8],
+      "opacity": 0.4
+    },
+    {
+      "name": "driver_seat",
+      "type": "box",
+      "position": [-0.8, 0.85, 4.2],
+      "size": [0.5, 0.9, 0.5],
+      "color": [0.2, 0.2, 0.4]
+    },
+    {
+      "name": "passenger_seat_left_1",
+      "type": "box",
+      "position": [-0.8, 0.85, 3.2],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_2",
+      "type": "box",
+      "position": [-0.8, 0.85, 2.3],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_3",
+      "type": "box",
+      "position": [-0.8, 0.85, 1.4],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_4",
+      "type": "box",
+      "position": [-0.8, 0.85, 0.5],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_5",
+      "type": "box",
+      "position": [-0.8, 0.85, -0.4],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_6",
+      "type": "box",
+      "position": [-0.8, 0.85, -1.3],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_7",
+      "type": "box",
+      "position": [-0.8, 0.85, -2.2],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_8",
+      "type": "box",
+      "position": [-0.8, 0.85, -3.1],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_left_9",
+      "type": "box",
+      "position": [-0.8, 0.85, -4.0],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_1",
+      "type": "box",
+      "position": [0.8, 0.85, 3.2],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_2",
+      "type": "box",
+      "position": [0.8, 0.85, 2.3],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_3",
+      "type": "box",
+      "position": [0.8, 0.85, 1.4],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_4",
+      "type": "box",
+      "position": [0.8, 0.85, 0.5],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_5",
+      "type": "box",
+      "position": [0.8, 0.85, -0.4],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_6",
+      "type": "box",
+      "position": [0.8, 0.85, -1.3],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_7",
+      "type": "box",
+      "position": [0.8, 0.85, -2.2],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_8",
+      "type": "box",
+      "position": [0.8, 0.85, -3.1],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "passenger_seat_right_9",
+      "type": "box",
+      "position": [0.8, 0.85, -4.0],
+      "size": [0.4, 0.9, 0.45],
+      "color": [0.25, 0.25, 0.45]
+    },
+    {
+      "name": "overhead_rack_left",
+      "type": "box",
+      "position": [-1.05, 2.2, 0.0],
+      "size": [0.35, 0.3, 8.0],
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "overhead_rack_right",
+      "type": "box",
+      "position": [1.05, 2.2, 0.0],
+      "size": [0.35, 0.3, 8.0],
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "handrail_left_1",
+      "type": "cylinder",
+      "position": [-0.32, 1.4, 3.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_left_2",
+      "type": "cylinder",
+      "position": [-0.32, 1.4, 1.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_left_3",
+      "type": "cylinder",
+      "position": [-0.32, 1.4, -0.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_left_4",
+      "type": "cylinder",
+      "position": [-0.32, 1.4, -2.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_left_5",
+      "type": "cylinder",
+      "position": [-0.32, 1.4, -4.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_right_1",
+      "type": "cylinder",
+      "position": [0.32, 1.4, 3.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_right_2",
+      "type": "cylinder",
+      "position": [0.32, 1.4, 1.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_right_3",
+      "type": "cylinder",
+      "position": [0.32, 1.4, -0.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_right_4",
+      "type": "cylinder",
+      "position": [0.32, 1.4, -2.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "handrail_right_5",
+      "type": "cylinder",
+      "position": [0.32, 1.4, -4.5],
+      "radius": 0.025,
+      "height": 2.0,
+      "color": [0.8, 0.8, 0.8]
+    },
+    {
+      "name": "armrest_sample",
+      "type": "box",
+      "position": [-0.55, 1.0, 2.3],
+      "size": [0.08, 0.1, 0.3],
+      "color": [0.3, 0.3, 0.3]
+    },
+    {
+      "name": "seat_belt_sample",
+      "type": "box",
+      "position": [-0.8, 1.1, 3.2],
+      "size": [0.05, 0.6, 0.02],
+      "rotation": [10, 0, 0],
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "window_shade_left_1",
+      "type": "box",
+      "position": [-1.28, 2.25, 2.5],
+      "size": [0.02, 0.02, 1.6],
+      "color": [0.8, 0.8, 0.7]
+    },
+    {
+      "name": "window_shade_left_2",
+      "type": "box",
+      "position": [-1.28, 2.25, 1.0],
+      "size": [0.02, 0.02, 1.6],
+      "color": [0.8, 0.8, 0.7]
+    },
+    {
+      "name": "window_shade_left_3",
+      "type": "box",
+      "position": [-1.28, 2.25, -0.5],
+      "size": [0.02, 0.02, 1.6],
+      "color": [0.8, 0.8, 0.7]
+    },
+    {
+      "name": "window_shade_right_1",
+      "type": "box",
+      "position": [1.28, 2.25, 2.5],
+      "size": [0.02, 0.02, 1.6],
+      "color": [0.8, 0.8, 0.7]
+    },
+    {
+      "name": "air_conditioning_vent_left",
+      "type": "box",
+      "position": [-1.05, 2.05, 2.0],
+      "size": [0.34, 0.02, 0.4],
+      "color": [0.6, 0.6, 0.6]
+    },
+    {
+      "name": "air_conditioning_vent_right",
+      "type": "box",
+      "position": [1.05, 2.05, 2.0],
+      "size": [0.34, 0.02, 0.4],
+      "color": [0.6, 0.6, 0.6]
+    },
+    {
+      "name": "reading_light_left",
+      "type": "cylinder",
+      "position": [-1.05, 2.0, 3.0],
+      "radius": 0.04,
+      "height": 0.03,
+      "color": [0.9, 0.9, 0.7]
+    },
+    {
+      "name": "reading_light_right",
+      "type": "cylinder",
+      "position": [1.05, 2.0, 3.0],
+      "radius": 0.04,
+      "height": 0.03,
+      "color": [0.9, 0.9, 0.7]
+    },
+    {
+      "name": "seat_number_sample",
+      "type": "box",
+      "position": [-0.8, 1.0, 3.2],
+      "size": [0.04, 0.05, 0.01],
+      "color": [0.9, 0.9, 0.2]
+    },
+    {
+      "name": "stop_bell_left",
+      "type": "cylinder",
+      "position": [-0.32, 2.45, 3.5],
+      "radius": 0.03,
+      "height": 0.02,
+      "color": [1.0, 0.2, 0.2]
+    },
+    {
+      "name": "stop_bell_right",
+      "type": "cylinder",
+      "position": [0.32, 2.45, 3.5],
+      "radius": 0.03,
+      "height": 0.02,
+      "color": [1.0, 0.2, 0.2]
+    },
+    {
+      "name": "emergency_hammer_left",
+      "type": "box",
+      "position": [-1.25, 1.8, -0.5],
+      "size": [0.02, 0.03, 0.15],
+      "color": [0.9, 0.1, 0.1]
+    },
+    {
+      "name": "emergency_hammer_right",
+      "type": "box",
+      "position": [1.25, 1.8, -0.5],
+      "size": [0.02, 0.03, 0.15],
+      "color": [0.9, 0.1, 0.1]
+    },
+    {
+      "name": "emergency_exit_sign",
+      "type": "box",
+      "position": [0, 3.2, -3.5],
+      "size": [0.6, 0.02, 0.02],
+      "color": [0.9, 0.1, 0.1]
+    },
+    {
+      "name": "fire_extinguisher",
+      "type": "cylinder",
+      "position": [-1.0, 0.7, 4.5],
+      "radius": 0.1,
+      "height": 0.5,
+      "color": [0.9, 0.1, 0.1]
+    },
+    {
+      "name": "first_aid_kit",
+      "type": "box",
+      "position": [-1.0, 1.3, 4.6],
+      "size": [0.3, 0.2, 0.2],
+      "color": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "trash_bin",
+      "type": "cylinder",
+      "position": [0.7, 0.6, 2.0],
+      "radius": 0.15,
+      "height": 0.5,
+      "color": [0.3, 0.3, 0.3]
+    },
+    {
+      "name": "tv_screen",
+      "type": "box",
+      "position": [0, 2.6, -0.5],
+      "size": [0.8, 0.5, 0.05],
+      "rotation": [0, 0, 0],
+      "color": [0.1, 0.1, 0.1]
+    },
+    {
+      "name": "toilet_wall",
+      "type": "box",
+      "position": [-0.275, 1.4, -5.4],
+      "size": [0.02, 2.0, 1.2],
+      "color": [0.7, 0.7, 0.7]
+    },
+    {
+      "name": "toilet_bowl",
+      "type": "box",
+      "position": [-1.0, 0.6, -5.7],
+      "size": [0.4, 0.4, 0.5],
+      "color": [1.0, 1.0, 1.0]
+    }
+  ]
+}
+
+
