@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品级城市建筑群程序化生成 - 低空漫游演示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050811;
+            font-family: sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        #ui-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffffff;
+            background: rgba(10, 18, 36, 0.85);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #1e3a8a;
+            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        h3 { margin: 0 0 10px 0; color: #60a5fa; font-size: 16px; }
+        p { margin: 5px 0; font-size: 13px; color: #94a3b8; }
+        .tag { display: inline-block; padding: 2px 6px; background: #2563eb; color: white; border-radius: 4px; font-size: 11px; margin-right: 5px;}
+    </style>
+    <!-- 引入 importmap 确保能正确解析 three.js 模块 -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+    
+    <div id="ui-info">
+        <h3>🏙️ 城市建筑程序化生成系统 (低空街景级)</h3>
+        <p><span class="tag" style="background:#ef4444">左侧楼宇</span> 现代大平层 (Luxury Large Flat)</p>
+        <p><span class="tag" style="background:#f59e0b">中间楼宇</span> 经典密集窗格 (Dense Grid Windows)</p>
+        <p><span class="tag" style="background:#10b981">右侧楼宇</span> 纵向条纹格栅 (Vertical Ribbed Fins)</p>
+        <hr style="border: 0; border-top: 1px solid #1e3a8a; margin: 10px 0;">
+        <p>🖱️ <b>操作指南:</b> 鼠标左键拖拽旋转视角 | 右键平移 | 滚轮缩放</p>
+        <p>💡 <b>消黑解法:</b> 已注入解法A（不透明高反玻璃）+ 哑光材质暗部保底</p>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // ==========================================
+        // 1. 初始化 WebGL 渲染上下文
+        // ==========================================
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0a1224, 0.007);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 3, 55);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.02;
+        controls.minDistance = 5;
+        controls.maxDistance = 150;
+
+        // ==========================================
+        // 2. 核心优化：动态生成环境图，提供高级倒影
+        // ==========================================
+        function createProceduralEnvMap() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1e293b');
+            gradient.addColorStop(0.5, '#475569');
+            gradient.addColorStop(1, '#0f172a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            return texture;
+        }
+        const envMap = createProceduralEnvMap();
+        scene.environment = envMap;
+        scene.background = new THREE.Color(0x0a1224);
+
+        // ==========================================
+        // 3. 高仿真光影布局
+        // ==========================================
+        const hemiLight = new THREE.HemisphereLight(0x60a5fa, 0x1e293b, 1.2);
+        scene.add(hemiLight);
+
+        const sunLight = new THREE.DirectionalLight(0xfff7ed, 2.0);
+        sunLight.position.set(40, 60, 20);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 2048;
+        sunLight.shadow.mapSize.height = 2048;
+        sunLight.shadow.camera.near = 0.5;
+        sunLight.shadow.camera.far = 200;
+        const d = 50;
+        sunLight.shadow.camera.left = -d;
+        sunLight.shadow.camera.right = d;
+        sunLight.shadow.camera.top = d;
+        sunLight.shadow.camera.bottom = -d;
+        sunLight.shadow.bias = -0.0005;
+        scene.add(sunLight);
+
+        const backLight = new THREE.DirectionalLight(0x38bdf8, 0.4);
+        backLight.position.set(-40, 20, -20);
+        scene.add(backLight);
+
+        // ==========================================
+        // 4. 初始化产品级 PBR 材质仓库 (修复死黑版)
+        // ==========================================
+        const materials = {
+            ground: new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.8 }),
+            podiumMarble: new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.1, metalness: 0.1 }),
+            whiteConcrete: new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.5 }),
+            
+            // 修复中间石材立面死黑：加入 0x0b1326 自发光保底
+            stoneWall: new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6, emissive: 0x0b1326 }),
+            
+// 修复右侧楼宇内芯死黑：给暗色玻璃也加上 emissive 底光
+// 直接换成 MeshBasicMaterial，彻底脱离光影计算，再也不会黑
+darkGlass: new THREE.MeshBasicMaterial({ 
+    color: 0x1e3a8a, // 换成这个深蓝色，保证在暗处依然清晰
+    transparent: true,
+    opacity: 0.8
+}),
+            
+            // 🌟 你的解法 A：高反光 + 不透明 + 深蓝环境自发光保底 🌟
+            curtainGlass: new THREE.MeshStandardMaterial({ color: 0x1a365d, roughness: 0.12, metalness: 0.95, transparent: false, emissive: 0x091d36 }),
+            
+           // 修复右侧铝板死黑：降低一点金属度，并注入 0x111827 的深灰蓝底光
+			brushedAluminum: new THREE.MeshStandardMaterial({ 
+				color: 0x94a3b8, 
+				roughness: 0.3, 
+				metalness: 0.5, 
+				emissive: 0x111827 
+			}),
+            windowInterior: new THREE.MeshBasicMaterial({ color: 0xfef08a })
+        };
+
+        // 地面
+        const groundGeo = new THREE.PlaneGeometry(1000, 1000);
+        const ground = new THREE.Mesh(groundGeo, materials.ground);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // ==========================================
+        // 5. 核心：面向立面语法的程序化工厂类
+        // ==========================================
+        class ProceduralBuildingFactory {
+            constructor() {
+                this.materials = materials;
+            }
+
+            createBuilding(W, H, D, style) {
+                const group = new THREE.Group();
+
+                const podiumGeo = new THREE.BoxGeometry(W + 0.4, 6, D + 0.4);
+                const podium = new THREE.Mesh(podiumGeo, this.materials.podiumMarble);
+                podium.position.y = 3;
+                podium.castShadow = true;
+                podium.receiveShadow = true;
+                group.add(podium);
+
+                if (style === 'large-flat') {
+                    this._buildLargeFlat(group, W, H, D);
+                } else if (style === 'dense-grid') {
+                    this._buildDenseGrid(group, W, H, D);
+                } else if (style === 'vertical-ribs') {
+                    this._buildVerticalRibs(group, W, H, D);
+                }
+
+                return group;
+            }
+
+            _buildLargeFlat(group, W, H, D) {
+                const floorH = 4;
+                const floors = Math.floor((H - 6) / floorH);
+
+                for (let i = 0; i < floors; i++) {
+                    const currY = 6 + i * floorH;
+
+                    const glassGeo = new THREE.BoxGeometry(W, floorH - 0.4, D);
+                    const glass = new THREE.Mesh(glassGeo, this.materials.curtainGlass);
+                    glass.position.y = currY + (floorH - 0.4) / 2;
+                    group.add(glass);
+
+                    // 在解法A下（不透明），内部的灯光块其实会被遮挡，但这保留了结构的完整性，后续可做其他扩展
+                    const intGeo = new THREE.BoxGeometry(W - 2, floorH - 1, D - 2);
+                    const interior = new THREE.Mesh(intGeo, this.materials.windowInterior);
+                    interior.position.y = glass.position.y;
+                    group.add(interior);
+
+                    const slabGeo = new THREE.BoxGeometry(W + 0.6, 0.4, D + 0.6);
+                    const slab = new THREE.Mesh(slabGeo, this.materials.whiteConcrete);
+                    slab.position.y = currY + floorH - 0.2;
+                    slab.castShadow = true;
+                    slab.receiveShadow = true;
+                    group.add(slab);
+                }
+            }
+
+            _buildDenseGrid(group, W, H, D) {
+                const bodyH = H - 6;
+                const bodyGeo = new THREE.BoxGeometry(W, bodyH, D);
+                const body = new THREE.Mesh(bodyGeo, this.materials.stoneWall);
+                body.position.y = 6 + bodyH / 2;
+                body.castShadow = true;
+                body.receiveShadow = true;
+                group.add(body);
+
+                const winW = 1.2;
+                const winH = 2.0;
+                const countX = Math.floor(W / 2.2);
+                const countY = Math.floor(bodyH / 3.5);
+
+                const winFrameGeo = new THREE.BoxGeometry(winW, winH, 0.3);
+                const instancedWindows = new THREE.InstancedMesh(winFrameGeo, this.materials.brushedAluminum, countX * countY * 2);
+                instancedWindows.castShadow = true;
+
+                let instanceIdx = 0;
+                const dummy = new THREE.Object3D();
+
+                for (let x = 0; x < countX; x++) {
+                    for (let y = 0; y < countY; y++) {
+                        const px = -W / 2 + (W / countX) * (x + 0.5);
+                        const py = 6 + (bodyH / countY) * (y + 0.5);
+
+                        dummy.position.set(px, py, D / 2 + 0.1);
+                        dummy.updateMatrix();
+                        instancedWindows.setMatrixAt(instanceIdx++, dummy.matrix);
+
+                        dummy.position.set(px, py, -D / 2 - 0.1);
+                        dummy.updateMatrix();
+                        instancedWindows.setMatrixAt(instanceIdx++, dummy.matrix);
+                    }
+                }
+                group.add(instancedWindows);
+            }
+
+            _buildVerticalRibs(group, W, H, D) {
+                const bodyH = H - 6;
+                const towerGeo = new THREE.BoxGeometry(W, bodyH, D);
+                const tower = new THREE.Mesh(towerGeo, this.materials.darkGlass);
+                tower.position.y = 6 + bodyH / 2;
+                group.add(tower);
+
+                const finW = 0.1;
+                const finD = 0.5;
+                const finSpacing = 0.6;
+                const finCount = Math.floor(W / finSpacing);
+
+                const finGeo = new THREE.BoxGeometry(finW, bodyH, finD);
+                const instancedFins = new THREE.InstancedMesh(finGeo, this.materials.brushedAluminum, finCount * 2);
+                instancedFins.castShadow = true;
+
+                let idx = 0;
+                const dummy = new THREE.Object3D();
+
+                for (let i = 0; i < finCount; i++) {
+                    const px = -W / 2 + (W / finCount) * (i + 0.5);
+                    
+                    dummy.position.set(px, 6 + bodyH / 2, D / 2 + finD / 2);
+                    dummy.updateMatrix();
+                    instancedFins.setMatrixAt(idx++, dummy.matrix);
+
+                    dummy.position.set(px, 6 + bodyH / 2, -D / 2 - finD / 2);
+                    dummy.updateMatrix();
+                    instancedFins.setMatrixAt(idx++, dummy.matrix);
+                }
+                group.add(instancedFins);
+            }
+        }
+
+        // ==========================================
+        // 6. 实例化工厂并组装群落
+        // ==========================================
+        const factory = new ProceduralBuildingFactory();
+
+        const b1 = factory.createBuilding(16, 40, 16, 'large-flat');
+        b1.position.set(-22, 0, 0);
+        scene.add(b1);
+
+        const b2 = factory.createBuilding(16, 45, 16, 'dense-grid');
+        b2.position.set(0, 0, 0);
+        scene.add(b2);
+
+        const b3 = factory.createBuilding(16, 50, 16, 'vertical-ribs');
+        b3.position.set(22, 0, 0);
+        scene.add(b3);
+
+        // ==========================================
+        // 7. 动画驱动与自适应窗口
+        // ==========================================
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = clock.getElapsedTime();
+            controls.update();
+
+            // 太阳光漂移
+            sunLight.position.x = 40 + Math.sin(time * 0.05) * 5;
+            
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
